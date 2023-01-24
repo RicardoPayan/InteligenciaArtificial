@@ -1,3 +1,4 @@
+from cmath import sqrt
 import collections
 import math
 from typing import Any, DefaultDict, List, Set, Tuple
@@ -38,7 +39,10 @@ def find_alphabetically_first_word(text: str) -> str:
     un error.
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    if len(text) > 0:
+        words = text.split()
+        return min(words)
+    return "La cadena esta vacia"
     # Fin de tu código
 
 
@@ -52,7 +56,8 @@ def euclidean_distance(loc1: Position, loc2: Position) -> float:
     posiciones son pares de números (p.ej. (3,5)).
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    sumatoria = ((loc1[0]-loc2[0])**2 + (loc1[1]-loc2[1])**2 )
+    return sqrt(sumatoria)
     # Fin de tu código
 
 
@@ -105,7 +110,7 @@ def sparse_vector_dot_product(v1: SparseVector, v2: SparseVector) -> float:
     lineales.
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    return sum(v1[key]*v2.get(key,0) for key in v1)
     # Fin de tu código
 
 
