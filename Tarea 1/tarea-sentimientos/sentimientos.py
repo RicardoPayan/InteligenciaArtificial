@@ -30,7 +30,7 @@ def extractWordFeatures(x: str) -> FeatureVector:
     
     for word in words:
     	if word in feature_vector:
-    		feature_vector[word] += 1
+    	    feature_vector[word] += 1
     	else:
     		feature_vector[word] = 1
     	
@@ -70,8 +70,15 @@ def learnPredictor(
     weights = {}  # característica => peso
 
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    #Ir viendo si la perdida disminuye
+    for t in range(numEpochs):
+        for x,y in trainExamples:
+            features = extractWordFeatures(x)
+            loss = max(1 - dotProduct(features, weights) * y, 0)
+            gradiente = -1*features[x]*y if (1 - dotProduct(features, weights)*y) > 0 else 0
+            weights = weights - eta * gradiente
     # Fin de tu código
+
     return weights
 
 
