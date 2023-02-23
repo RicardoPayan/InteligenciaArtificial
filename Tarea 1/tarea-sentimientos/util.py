@@ -171,3 +171,42 @@ def outputClusters(
             if z == j:
                 print(" ".join(list(examples[i].keys())), file=out)
     out.close()
+
+def multiply_dict_values(d: dict, n: float) -> dict:
+    #Funcion que multiplica los valores de un diccionario por un numero
+    return {k: v * n for k, v in d.items()}
+
+def resta_vectores(dict1, dict2):
+    keys =  set(dict1).union(set(dict2))
+    result_dict = {}
+    for key in keys:
+        result_dict[key] = dict1.get(key,0) - dict2.get(key,0)
+    
+    return result_dict
+
+def resta_vector_numero(dict1, num):
+    result_dict = {}
+    for key in dict1:
+        result_dict[key] = dict1[key] - num
+    return result_dict
+
+def predictor (weights, features):
+    return 1 if dotProduct(weights,features) >=0 else -1
+
+def margin(weights,features,label):
+    return dotProduct(features,weights) * label
+
+def loss_hinge(weights,features,label):
+    margen = margin(weights,features,label)
+    return max(1-margen,0)
+
+def gradient_loss(weights,features,label):
+    margen = margin(weights,features,label)
+
+    if (1-margen) > 0:
+        multi_aux = multiply_dict_values(features,label) #phi(x)*y
+        return multiply_dict_values(multi_aux,-1)
+    else:
+        return 0
+
+

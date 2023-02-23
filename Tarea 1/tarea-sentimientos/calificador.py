@@ -2,6 +2,7 @@ import string
 import util
 import random
 import sentimientos
+from util import *
 
 
 test_cases_3a = [
