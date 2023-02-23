@@ -1,5 +1,6 @@
 import random
 from typing import Callable, Dict, List, Tuple, TypeVar
+import weakref
 
 from util import *
 
@@ -70,13 +71,33 @@ def learnPredictor(
     weights = {}  # característica => peso
 
     # Inicio de tu código
-    #Ir viendo si la perdida disminuye
-    for t in range(numEpochs):
-        for x,y in trainExamples:
-            features = extractWordFeatures(x)
-            loss = max(1 - dotProduct(features, weights) * y, 0)
-            gradiente = -1*features[x]*y if (1 - dotProduct(features, weights)*y) > 0 else 0
-            weights = weights - eta * gradiente
+    #Definimos una funcion general para el predictor.
+    #Recordando que debe devolver 1 si es mayor o igual que 0 y -1 en otro caso.
+    def predictor(x):
+        return 1 if dotProduct(weights,featureExtractor(x)) >= 0 else -1
+    
+    #Empezamos el vector de los pesos con 0s
+    for example, label in trainExamples:
+        for feature in featureExtractor(example):
+            weights[example] = 0
+
+    for epoch in range(numEpochs):
+        for example, label in trainExamples:
+            #A lo mejor podemos calcular el margen. Si el margen da 0 cero, significa que estamos sobre la frontera de decision
+            #Si es negativo, estamos clasificando mal este ejemplo en especifico, debemos actualizar los pesos
+            #Si es positivo, lo estamos clasificando bien.
+            margen = predictor(example)*label
+            if margen < 0 :
+                increment(weights,eta*label,featureExtractor(example))
+
+        error_train = evaluatePredictor(trainExamples,lambda x: (
+            1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
+        error_validation = evaluatePredictor(validationExamples,lambda x: (
+            1 if dotProduct(weights, featureExtractor(x)) >= 0 else -1))
+    
+    print(
+        f"Epoch {epoch}: train error = {error_train:.10f}, validation error = {error_validation:.10f}")
+
     # Fin de tu código
 
     return weights
