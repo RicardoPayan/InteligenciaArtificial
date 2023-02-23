@@ -116,7 +116,8 @@ def generateDataset(numExamples: int, weights: WeightVector) -> List[Example]:
     # Nota que el vector de pesos puede ser arbitrario durante las pruebas.
     def generateExample() -> Tuple[Dict[str, int], int]:
         # Inicio de tu código
-        raise Exception("Aún no implementada")
+        phi = {feature: random.random() for feature in random.sample(list(weights), random.randint(0,len(weights)))}
+        y = 1 if dotProduct(weights, phi) >=0 else -1
         # Fin de tu código
         return phi, y
 
