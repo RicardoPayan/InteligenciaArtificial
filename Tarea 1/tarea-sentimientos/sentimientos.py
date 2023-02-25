@@ -1,6 +1,7 @@
 import random
 from typing import Callable, Dict, List, Tuple, TypeVar
 import weakref
+from collections import Counter
 
 from util import *
 
@@ -139,7 +140,8 @@ def extractCharacterFeatures(n: int) -> Callable[[str], FeatureVector]:
 
     def extract(x: str) -> Dict[str, int]:
         # Inicio de tu código
-        raise Exception("Aún no implementada")
+        X = x.replace(" ","") #Sustituimos los espacios.
+
         # Fin de tu código
 
     return extract
