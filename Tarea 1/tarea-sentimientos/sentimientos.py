@@ -40,8 +40,6 @@ def extractWordFeatures(x: str) -> FeatureVector:
    
     # Fin de tu código
 
-vector = extractWordFeatures("a b a")
-print(vector)
 ############################################################
 # Problem 3b: stochastic gradient descent
 
@@ -74,7 +72,7 @@ def learnPredictor(
     # Inicio de tu código
     for epoch in range(numEpochs):
         for example, label in trainExamples:
-            features = extractWordFeatures(example)
+            features = featureExtractor(example)
             
             gradiente = gradient_loss(weights,features,label)
 
@@ -140,8 +138,9 @@ def extractCharacterFeatures(n: int) -> Callable[[str], FeatureVector]:
 
     def extract(x: str) -> Dict[str, int]:
         # Inicio de tu código
-        X = x.replace(" ","") #Sustituimos los espacios.
-
+        x = x.replace(" ","") #Sustituimos los espacios.
+        engramas = [x[i:i+n] for i in range(len(x)-n+1)]
+        return dict (Counter(engramas))
         # Fin de tu código
 
     return extract
