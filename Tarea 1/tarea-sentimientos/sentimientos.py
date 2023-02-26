@@ -1,4 +1,5 @@
 import random
+import collections
 from typing import Callable, Dict, List, Tuple, TypeVar
 import weakref
 from collections import Counter
@@ -182,6 +183,7 @@ def testValuesOfN(n: int):
     )
 
 
+
 ############################################################
 # Problem 5: k-means
 ############################################################
@@ -203,5 +205,34 @@ def kmeans(
              pérdida final)
     """
     # Inicio de tu código
-    raise Exception("Aún no implementada")
+    def distance(x, mu):
+        return sum((x[i] - mu[i])**2 for i in x)
+
+    centers = random.sample(examples, K)
+    z = [0] * len(examples)
+    for t in range(maxEpochs):
+        # step 1
+        for i, x in enumerate(examples):
+            min_d = 1000000000
+            for k, mu in enumerate(centers):
+                d = distance(x, mu)
+                if d < min_d:
+                    min_d = d
+                    z[i] = k
+        # step 2
+        for k, mu in enumerate(centers):
+            sum_x = collections.defaultdict(float)
+            count = z.count(k)
+            for i, x in enumerate(examples):
+                if z[i] == k:
+                    increment(sum_x, 1 / count, x)
+                centers[k] = sum_x
+    # calculate loss
+    loss = 0
+    for i, x in enumerate(examples):
+        diff = x.copy()
+        increment(diff, -1, centers[z[i]])
+        loss += dotProduct(diff, diff)
+
+    return (centers, z, loss)
     # Fin de tu código
