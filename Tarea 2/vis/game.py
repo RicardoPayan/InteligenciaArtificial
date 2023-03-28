@@ -7,12 +7,14 @@ import pygame
 from problem import Problem
 from ucs import UniformCostSearch
 from backtracking  import Backtracking
+from dfs import DepthFirstSearch
+from bfs import BreadthFirstSearch
 
 cmap = mpl.colormaps["inferno"]
 hcells = 20
 vcells = 20
-cellw = 10
-cellh = 10
+cellw = 15
+cellh = 15
 
 
 class Button:
@@ -85,8 +87,8 @@ class Game:
 
         self.pause_btn.setEnabled(False)
         self.bt_btn.setEnabled(True)
-        self.dfs_btn.setEnabled(False)
-        self.bfs_btn.setEnabled(False)
+        self.dfs_btn.setEnabled(True)
+        self.bfs_btn.setEnabled(True)
         self.dfsid_btn.setEnabled(False)
         self.dp_btn.setEnabled(False)
         self.astar_btn.setEnabled(False)
@@ -110,8 +112,8 @@ class Game:
 
         self.algorithms = [
             (self.bt_btn, Backtracking),
-            (self.dfs_btn, None),
-            (self.bfs_btn, None),
+            (self.dfs_btn, DepthFirstSearch),
+            (self.bfs_btn, BreadthFirstSearch),
             (self.dfsid_btn, None),
             (self.dp_btn, None),
             (self.ucs_btn, UniformCostSearch),
