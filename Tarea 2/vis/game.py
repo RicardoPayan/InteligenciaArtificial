@@ -9,8 +9,8 @@ from ucs import UniformCostSearch
 from backtracking  import Backtracking
 
 cmap = mpl.colormaps["inferno"]
-hcells = 80
-vcells = 80
+hcells = 20
+vcells = 20
 cellw = 10
 cellh = 10
 
