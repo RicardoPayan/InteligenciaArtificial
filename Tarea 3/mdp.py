@@ -59,3 +59,32 @@ def targets(mdp, source, action):
         prob = mdp.probability(source, action, target)
         reward = mdp.reward(source, action, target)
         yield (target, prob, reward)
+
+def valueIteration(mdp):
+    V = {}
+    for state in mdp.states():
+        V[state] = 0
+    def Q(state, action):
+        return sum(prob * (reward + mdp.discount() * V[target])
+                   for target, prob, reward in mdp.succProbReward(state, action))
+    while True:
+        Vnew = {}
+        for state in mdp.states():
+            if mdp.isEnd(state):
+                Vnew[state] = 0
+            else:
+                Vnew[state] = max(Q(state, action) for action in mdp.actions(state))
+        if max(abs(Vnew[state] - V[state]) for state in mdp.states()) < 0.0001:
+            break
+        V = Vnew  
+
+        pi = {}
+        for state in mdp.states():
+            if mdp.isEnd(state):
+                pi[state] = None
+            else:
+                pi[state] = max(mdp.actions(state), key=lambda action: Q(state, action))
+
+        for state in mdp.states():
+            print(state, V[state], pi[state])
+        input("Press Enter to continue...") 

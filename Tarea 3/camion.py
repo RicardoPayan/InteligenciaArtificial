@@ -1,4 +1,6 @@
+from sympy import im
 from mdp import MarkovDecisionProcess
+from mdp import valueIteration
 
 
 class MagicBus(MarkovDecisionProcess):
@@ -52,34 +54,6 @@ class MagicBus(MarkovDecisionProcess):
         else:
             return []
 
-def valueIteration(mdp):
-    V = {}
-    for state in mdp.states():
-        V[state] = 0
-    def Q(state, action):
-        return sum(prob * (reward + mdp.discount() * V[target])
-                   for target, prob, reward in mdp.succProbReward(state, action))
-    while True:
-        Vnew = {}
-        for state in mdp.states():
-            if mdp.isEnd(state):
-                Vnew[state] = 0
-            else:
-                Vnew[state] = max(Q(state, action) for action in mdp.actions(state))
-        if max(abs(Vnew[state] - V[state]) for state in mdp.states()) < 0.0001:
-            break
-        V = Vnew  
 
-        pi = {}
-        for state in mdp.states():
-            if mdp.isEnd(state):
-                pi[state] = None
-            else:
-                pi[state] = max(mdp.actions(state), key=lambda action: Q(state, action))
-
-        for state in mdp.states():
-            print(state, V[state], pi[state])
-        input("Press Enter to continue...") 
-mdp = MagicBus(blocks=10, walkCost=1, busCost=1, failProb=0.5, discount=1.0)
-
+mdp = MagicBus(blocks=6, walkCost=1, busCost=2, failProb=0.5, discount=1.0)
 valueIteration(mdp)

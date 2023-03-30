@@ -1,5 +1,5 @@
 from mdp import MarkovDecisionProcess
-
+from mdp import valueIteration
 
 class DiceGame(MarkovDecisionProcess):
     def __init__(self, continueReward=4.0, exitReward=10.0, discount=1.0):
@@ -58,3 +58,18 @@ class DiceGame(MarkovDecisionProcess):
 
     def isEnd(self, state):
         return state == "end"
+    
+    def states(self):
+        return self.rules.keys()
+
+    def succProbReward(self, state, action):
+        result = []
+        for action in self.actions(state):
+            for transition in self.transitions(state,action):
+                probability = self.probability(state,action,transition)
+                reward = self.reward(state,action,transition)
+                result.append([transition,probability,reward])
+        return result
+
+mdp = DiceGame(continueReward=4.0, exitReward=10.0, discount=1.0)
+valueIteration(mdp)
