@@ -9,12 +9,15 @@ from ucs import UniformCostSearch
 from backtracking  import Backtracking
 from dfs import DepthFirstSearch
 from bfs import BreadthFirstSearch
+from dfsid import DepthFirstSearchID
+from dp import DynamicProgramming
+from astar import Astar
 
 cmap = mpl.colormaps["inferno"]
-hcells = 20
-vcells = 20
-cellw = 15
-cellh = 15
+hcells = 10
+vcells = 10
+cellw = 50
+cellh = 50
 
 
 class Button:
@@ -70,28 +73,28 @@ class Game:
         self.mousex = 0
         self.mousey = 0
 
-        self.pen_btn = Button("vis/assets/pen.png", 32, 32, 0 * 32, 0)
-        self.eraser_btn = Button("vis/assets/eraser.png", 32, 32, 1 * 32, 0)
-        self.play_btn = Button("vis/assets/play.png", 32, 32, 2 * 32, 0)
-        self.pause_btn = Button("vis/assets/pause.png", 32, 32, 3 * 32, 0)
-        self.step_btn = Button("vis/assets/step.png", 32, 32, 4 * 32, 0)
-        self.stop_btn = Button("vis/assets/stop.png", 32, 32, 5 * 32, 0)
-        self.trash_btn = Button("vis/assets/trash.png", 32, 32, 6 * 32, 0)
-        self.bt_btn = Button("vis/assets/route-bt.png", 64, 32, 7 * 32, 0)
-        self.dfs_btn = Button("vis/assets/route-dfs.png", 64, 32, 7 * 32 + 64, 0)
-        self.bfs_btn = Button("vis/assets/route-bfs.png", 64, 32, 7 * 32 + 2 * 64, 0)
-        self.dfsid_btn = Button("vis/assets/route-dfsid.png", 64, 32, 7 * 32 + 3 * 64, 0)
-        self.dp_btn = Button("vis/assets/route-dp.png", 64, 32, 7 * 32 + 4 * 64, 0)
-        self.ucs_btn = Button("vis/assets/route-ucs.png", 64, 32, 7 * 32 + 5 * 64, 0)
-        self.astar_btn = Button("vis/assets/route-astar.png", 64, 32, 7 * 32 + 6 * 64, 0)
+        self.pen_btn = Button("./assets/pen.png", 32, 32, 0 * 32, 0)
+        self.eraser_btn = Button("./assets/eraser.png", 32, 32, 1 * 32, 0)
+        self.play_btn = Button("./assets/play.png", 32, 32, 2 * 32, 0)
+        self.pause_btn = Button("./assets/pause.png", 32, 32, 3 * 32, 0)
+        self.step_btn = Button("./assets/step.png", 32, 32, 4 * 32, 0)
+        self.stop_btn = Button("./assets/stop.png", 32, 32, 5 * 32, 0)
+        self.trash_btn = Button("./assets/trash.png", 32, 32, 6 * 32, 0)
+        self.bt_btn = Button("./assets/route-bt.png", 64, 32, 7 * 32, 0)
+        self.dfs_btn = Button("./assets/route-dfs.png", 64, 32, 7 * 32 + 64, 0)
+        self.bfs_btn = Button("./assets/route-bfs.png", 64, 32, 7 * 32 + 2 * 64, 0)
+        self.dfsid_btn = Button("./assets/route-dfsid.png", 64, 32, 7 * 32 + 3 * 64, 0)
+        self.dp_btn = Button("./assets/route-dp.png", 64, 32, 7 * 32 + 4 * 64, 0)
+        self.ucs_btn = Button("./assets/route-ucs.png", 64, 32, 7 * 32 + 5 * 64, 0)
+        self.astar_btn = Button("./assets/route-astar.png", 64, 32, 7 * 32 + 6 * 64, 0)
 
         self.pause_btn.setEnabled(False)
         self.bt_btn.setEnabled(True)
         self.dfs_btn.setEnabled(True)
         self.bfs_btn.setEnabled(True)
-        self.dfsid_btn.setEnabled(False)
-        self.dp_btn.setEnabled(False)
-        self.astar_btn.setEnabled(False)
+        self.dfsid_btn.setEnabled(True)
+        self.dp_btn.setEnabled(True)
+        self.astar_btn.setEnabled(True)
 
         self.buttons = [
             self.pen_btn,
@@ -114,10 +117,10 @@ class Game:
             (self.bt_btn, Backtracking),
             (self.dfs_btn, DepthFirstSearch),
             (self.bfs_btn, BreadthFirstSearch),
-            (self.dfsid_btn, None),
-            (self.dp_btn, None),
+            (self.dfsid_btn, DepthFirstSearchID),
+            (self.dp_btn, DynamicProgramming),
             (self.ucs_btn, UniformCostSearch),
-            (self.astar_btn, None),
+            (self.astar_btn, Astar),
         ]
 
         self.algorithmButton = None
