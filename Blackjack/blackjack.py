@@ -289,6 +289,19 @@ def utility(eps, eta):
 
     return Q
 
+def poleval(mdp, policy, n=100):
+    states = reachable_states(mdp)
+    v = {s: 0 for s in states}
+
+    def Q(src, act):
+        dis = mdp.discount()
+        return sum(p * (r + dis * v[tgt]) for tgt, p, r in targets(mdp, src, act))
+
+    for _ in range(n):
+        v = {s: Q(s, policy(s)) if not mdp.isEnd(s) else 0 for s in states}
+
+    return v
+
 def reachable_states(mdp):
     pending = {mdp.startState()}
     reachable = set()
@@ -305,18 +318,7 @@ def reachable_states(mdp):
 
 
 
-def poleval(mdp, policy, n=100):
-    states = reachable_states(mdp)
-    v = {s: 0 for s in states}
 
-    def Q(src, act):
-        dis = mdp.discount()
-        return sum(p * (r + dis * v[tgt]) for tgt, p, r in targets(mdp, src, act))
-
-    for _ in range(n):
-        v = {s: Q(s, policy(s)) if not mdp.isEnd(s) else 0 for s in states}
-
-    return v
 
 
 
@@ -347,27 +349,23 @@ def ValueIteration(mdp):
 
 
 
-mdp=BlackjackMiron(values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-        multiplicity=4,
-        threshold=21,
-        peek_cost=-1,
-    )
+mdp=BlackjackMiron(values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],multiplicity=4,threshold=21,peek_cost=-1,)
 
 eps = []
 for i in range(100000):
     eps.append(play_random_blackjack())
 
-# Q-learning
+#QLearning
 print("Q-learning")
 for key, value in sorted(Qlearning(eps, 0.2, epsilon=0.1, gamma=0.95).items()):
     print(f"{key}: {value}")
 
-# Utility
+#utility
 print("Utility")
 for key, value in utility(eps, 0.1):
     print(f"{key}: {value}")
 
-# SARSA
+#SARSA
 print("SARSA")
 for key, value in sorted(SARSA(eps, 0.1, 0.95).items()):
     print(f"{key}: {value}")
